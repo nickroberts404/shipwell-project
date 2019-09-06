@@ -10,3 +10,12 @@ export const addStop = (name, address) => ({
 		complete: false,
 	},
 });
+
+export const updateField = (field, value, error) => ({
+	type: UPDATE_FIELD,
+	field,
+	data: {
+		value,
+		error,
+	},
+});
