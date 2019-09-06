@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { addStop } from '../actions';
 import FormField from './FormField';
 import axios from 'axios';
 
@@ -25,10 +23,9 @@ const getValidAddress = async (address) => {
 	}
 };
 
-const Form = () => {
-	const dispatch = useDispatch();
-	const [name, setName] = useState('');
-	const [address, setAddress] = useState('');
+const Form = ({ initialName = '', initialAddress = '', onSubmit }) => {
+	const [name, setName] = useState(initialName);
+	const [address, setAddress] = useState(initialAddress);
 	const [errors, setErrors] = useState({ name: '', address: '' });
 	const [showErrors, setShowErrors] = useState(false);
 
@@ -57,7 +54,7 @@ const Form = () => {
 			setErrors({ ...errors, address: 'Please enter a valid address.' });
 			return false;
 		}
-		dispatch(addStop(name, validAddress));
+		onSubmit(name, validAddress);
 		setName('');
 		setAddress('');
 		setShowErrors(false);
