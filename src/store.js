@@ -1,28 +1,32 @@
 import { createStore } from 'redux';
 
 export const ADD_STOP = 'ADD_STOP';
-export const UPDATE_FIELD = 'UPDATE_FIELD';
+export const UPDATE_STOP = 'UPDATE_STOP';
+export const DELETE_STOP = 'DELETE_STOP';
 
 const initialState = {
-	form: {
-		fields: { name: { value: '', error: '' }, address: { value: '', error: '' } },
-		showErrors: false,
-	},
-	itinerary: [{ id: 0, name: "Nick's House", address: '1411 Continental Pass' }],
+	itinerary: [{ id: 0, name: "Nick's House", address: '1411 Continental Pass', complete: false }],
 };
+
+// Seperate Reducer
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case ADD_STOP:
 			return { ...state, itinerary: [...state.itinerary, action.stop] };
-		case UPDATE_FIELD:
+		case UPDATE_STOP:
 			return {
 				...state,
-				form: {
-					...state.form,
-					fields: { ...state.form.fields, [action.field]: action.data },
-				},
+				itinerary: state.itinerary.map((item) =>
+					item.id === action.id ? Object.assign({}, item, action.update) : item
+				),
 			};
+		case DELETE_STOP:
+			return {
+				...state,
+				itinerary: state.itinerary.filter((item) => item.id !== action.id),
+			};
+
 		default:
 			return state;
 	}

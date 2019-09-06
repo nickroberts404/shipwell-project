@@ -1,4 +1,4 @@
-import { ADD_STOP } from './store';
+import { ADD_STOP, UPDATE_STOP, DELETE_STOP } from './store';
 import uniqid from 'uniqid';
 
 export const addStop = (name, address) => ({
@@ -11,11 +11,13 @@ export const addStop = (name, address) => ({
 	},
 });
 
-export const updateField = (field, value, error) => ({
-	type: UPDATE_FIELD,
-	field,
-	data: {
-		value,
-		error,
-	},
+export const updateStop = (id, update) => ({
+	type: UPDATE_STOP,
+	id,
+	update,
+});
+
+export const deleteStop = (id) => ({
+	type: DELETE_STOP,
+	id,
 });

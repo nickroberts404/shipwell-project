@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { addStop } from '../actions';
 import FormField from './FormField';
 import axios from 'axios';
@@ -11,14 +11,36 @@ const validateAddress = (address) => {
 	return '';
 };
 
+const getValidAddress = async (address) => {
+	try {
+		const res = await axios.post(
+			'https://dev-api.shipwell.com/v2/locations/addresses/validate/',
+			{
+				formatted_address: address,
+			}
+		);
+		return res.data.geocoded_address.formatted_address;
+	} catch (err) {
+		return false;
+	}
+};
+
 const Form = () => {
 	const dispatch = useDispatch();
 	const [name, setName] = useState('');
 	const [address, setAddress] = useState('');
+	const [errors, setErrors] = useState({ name: '', address: '' });
 	const [showErrors, setShowErrors] = useState(false);
 
+	useEffect(() => {
+		setErrors({
+			name: validateName(name),
+			address: validateAddress(address),
+		});
+	}, [name, address]);
+
 	const validateForm = () => {
-		if (validateName(name) || validateAddress(address)) {
+		if (errors.name || errors.address) {
 			return false;
 		}
 		return true;
@@ -26,31 +48,32 @@ const Form = () => {
 
 	const submitForm = async (e) => {
 		e.preventDefault();
-		// axios
-		// 	.post('https://dev-api.shipwell.com/v2/locations/addresses/validate/', {
-		// 		formatted_address: '2jkkfkfmk',
-		// 	})
-		// 	.then((res) => console.log(res.data))
-		// 	.catch((err) => console.log(err));
-		const isFormValid = validateForm();
-		if (!isFormValid) {
-			setShowErrors(true);
+		setShowErrors(true);
+		if (!validateForm()) {
 			return false;
 		}
-		dispatch(addStop(name, address));
+		const validAddress = await getValidAddress(address);
+		if (!validAddress) {
+			setErrors({ ...errors, address: 'Please enter a valid address.' });
+			return false;
+		}
+		dispatch(addStop(name, validAddress));
+		setName('');
+		setAddress('');
+		setShowErrors(false);
 	};
 	return (
 		<form onSubmit={submitForm}>
 			<FormField
 				value={name}
 				update={setName}
-				error={showErrors && validateName(name)}
+				error={showErrors && errors.name}
 				label={'Name'}
 			/>
 			<FormField
 				value={address}
 				update={setAddress}
-				error={showErrors && validateAddress(address)}
+				error={showErrors && errors.address}
 				label={'Address'}
 			/>
 			<button type="submit">Add Stop</button>
