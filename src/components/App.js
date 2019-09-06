@@ -1,5 +1,10 @@
 import React from 'react';
-
-const App = () => <div>I'm an app!</div>;
+// import Form from './Form';
+import Itinerary from './Itinerary';
+const App = () => (
+	<div>
+		<Itinerary />
+	</div>
+);
 
 export default App;
