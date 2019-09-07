@@ -1,11 +1,12 @@
 import React from 'react';
+import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import ItineraryItem from './ItineraryItem';
 
 const Itinerary = () => {
 	const itinerary = useSelector((state) => state.itinerary);
 	return (
-		<div>
+		<Container>
 			{itinerary.map((item, i) => (
 				<ItineraryItem
 					key={item.id}
@@ -16,8 +17,13 @@ const Itinerary = () => {
 					complete={item.complete}
 				/>
 			))}
-		</div>
+		</Container>
 	);
 };
 
+const Container = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
 export default Itinerary;
