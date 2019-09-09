@@ -10,21 +10,26 @@ const validateAddress = (address) => {
 	return '';
 };
 
+// Queries Shipwell API for valid address. If successful, return the formatted address, otherwise throws an error.
 const getValidAddress = async (address) => {
-	try {
-		const res = await axios.post(
-			'https://dev-api.shipwell.com/v2/locations/addresses/validate/',
-			{
-				formatted_address: address,
-			}
-		);
-		return res.data.geocoded_address.formatted_address;
-	} catch (err) {
-		return false;
-	}
+	const res = await axios.post('https://dev-api.shipwell.com/v2/locations/addresses/validate/', {
+		formatted_address: address,
+	});
+	return res.data.geocoded_address.formatted_address;
 };
 
-const Form = ({ initialName = '', initialAddress = '', onSubmit }) => {
+// If there are any truthy values (strings) in the error object, return true
+const hasErrors = (errors) => {
+	const values = Object.values(errors);
+	return values.some((e) => !!e);
+};
+
+const Form = ({
+	initialName = '',
+	initialAddress = '',
+	submitButtonText = 'Add Stop',
+	onSubmit,
+}) => {
 	const [name, setName] = useState(initialName);
 	const [address, setAddress] = useState(initialAddress);
 	const [errors, setErrors] = useState({ name: '', address: '' });
@@ -37,28 +42,20 @@ const Form = ({ initialName = '', initialAddress = '', onSubmit }) => {
 		});
 	}, [name, address]);
 
-	const validateForm = () => {
-		if (errors.name || errors.address) {
-			return false;
-		}
-		return true;
-	};
-
 	const submitForm = async (e) => {
-		e.preventDefault();
-		setShowErrors(true);
-		if (!validateForm()) {
-			return false;
-		}
-		const validAddress = await getValidAddress(address);
-		if (!validAddress) {
+		e.preventDefault(); // Do not refresh page
+		setShowErrors(true); // After a form is dirty, display errors
+		if (hasErrors(errors)) return false;
+		try {
+			const validAddress = await getValidAddress(address);
+			onSubmit(name, validAddress);
+			setName('');
+			setAddress('');
+			setShowErrors(false);
+		} catch (err) {
 			setErrors({ ...errors, address: 'Please enter a valid address.' });
 			return false;
 		}
-		onSubmit(name, validAddress);
-		setName('');
-		setAddress('');
-		setShowErrors(false);
 	};
 	return (
 		<form onSubmit={submitForm}>
@@ -74,7 +71,7 @@ const Form = ({ initialName = '', initialAddress = '', onSubmit }) => {
 				error={showErrors && errors.address}
 				label={'Address'}
 			/>
-			<SubmitButton type="submit">Add Stop</SubmitButton>
+			<SubmitButton type="submit">{submitButtonText}</SubmitButton>
 		</form>
 	);
 };
