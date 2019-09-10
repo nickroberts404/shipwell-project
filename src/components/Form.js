@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { primaryColor } from '../styleVariables';
 import FormField from './FormField';
 import axios from 'axios';
 
@@ -83,7 +84,7 @@ const StyledForm = styled.form`
 	width: 100%;
 `;
 const SubmitButton = styled.button`
-	border: 1px solid #0679b1;
+	border: 1px solid ${primaryColor};
 	border-radius: 5px;
 	align-self: flex-end;
 	cursor: pointer;
@@ -91,10 +92,10 @@ const SubmitButton = styled.button`
 	margin-top: 0.25rem;
 	outline: none;
 	color: #fff;
-	background: #0679b1;
+	background: ${primaryColor};
 	&:hover {
 		background: #fff;
-		color: #0679b1;
+		color: ${primaryColor};
 	}
 `;
 

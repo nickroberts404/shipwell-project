@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { primaryColor } from '../styleVariables';
 const Header = () => {
 	return (
 		<Container>
@@ -9,7 +10,7 @@ const Header = () => {
 };
 
 const Container = styled.header`
-	color: #0679b1;
+	color: ${primaryColor};
 `;
 
 export default Header;

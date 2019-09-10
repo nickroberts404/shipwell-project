@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { deleteStop } from '../actions';
+import { updateStop, deleteStop } from '../actions';
+import { primaryColor, dangerColor, completeColor } from '../styleVariables';
 import FormUpdate from './FormUpdate';
 
 const ItineraryItem = ({ id, stopNum, name, address, complete }) => {
@@ -12,7 +13,7 @@ const ItineraryItem = ({ id, stopNum, name, address, complete }) => {
 	const toggleEditing = () => setEditing(!editing);
 	return (
 		<Container>
-			<StopNumber>
+			<StopNumber complete={complete}>
 				Stop <span>{stopNum}</span>
 			</StopNumber>
 			<MiddleSection>
@@ -33,10 +34,10 @@ const ItineraryItem = ({ id, stopNum, name, address, complete }) => {
 					</CompleteLabel>
 				</Top>
 				<Bottom>
-					<StyledButton color="#0679b1" onClick={toggleEditing}>
+					<StyledButton color={primaryColor} onClick={toggleEditing}>
 						{editing ? 'Cancel' : 'Edit'}
 					</StyledButton>
-					<StyledButton color="#c53737" onClick={removeStop}>
+					<StyledButton color={dangerColor} onClick={removeStop}>
 						Remove
 					</StyledButton>
 				</Bottom>
@@ -52,28 +53,32 @@ const Container = styled.div`
 	width: 90%;
 	max-width: 50rem;
 	margin-bottom: 0.5rem;
-	overflow: hidden;
+	@media (max-width: 500px) {
+		flex-direction: column;
+	}
 `;
 const StopNumber = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	width: 5rem;
 	color: white;
-	background: #0679b1;
+	background: ${(props) => (props.complete ? completeColor : primaryColor)};
 	border-radius: 5px 0 0 5px;
 	font-size: 0.8rem;
-	padding-top: 0.2rem;
+	padding: 0.2rem 2rem;
 	span {
 		font-size: 2rem;
 	}
-	margin-right: 0.5rem;
+	@media (max-width: 500px) {
+		border-radius: 5px 5px 0 0;
+	}
 `;
 const MiddleSection = styled.div`
 	display: flex;
 	align-items: center;
 	flex-grow: 1;
+	padding: 0.5rem;
 `;
 const Name = styled.div`
 	font-size: 1.25rem;
@@ -92,9 +97,13 @@ const Top = styled.div`
 	justify-content: flex-end;
 	flex-grow: 1;
 `;
-const Bottom = styled.div``;
+const Bottom = styled.div`
+	display: flex;
+	justify-content: flex-end;
+`;
 const CompleteLabel = styled.label`
 	font-size: 0.9rem;
+	padding: 0.5rem;
 `;
 const StyledButton = styled.button`
 	color: ${(props) => props.color};

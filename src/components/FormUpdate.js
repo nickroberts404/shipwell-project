@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { updateStop, deleteStop } from '../actions';
+import { updateStop } from '../actions';
 import Form from './Form';
 
 const FormUpdate = ({ id, name, address, setEditing }) => {

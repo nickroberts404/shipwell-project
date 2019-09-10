@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { dangerColor } from '../styleVariables';
 
 const FormField = ({ value, placeholder, update, error, label }) => {
 	const onChange = (e) => update(e.target.value);
@@ -29,7 +30,7 @@ const Text = styled.div`
 	font-size: 0.8rem;
 `;
 const Error = styled.div`
-	color: red;
+	color: ${dangerColor};
 	font-size: 0.8rem;
 	height: 15px;
 	align-self: flex-end;
