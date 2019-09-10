@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from './Header';
-import { CreateStopForm } from './form';
-import { Itinerary } from './itinerary';
+import { CreateStopForm } from '../form';
+import { Itinerary } from '../itinerary';
 const App = () => {
 	return (
 		<Container>
