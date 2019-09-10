@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { updateStop, deleteStop } from '../actions';
 import { primaryColor, dangerColor, completeColor } from '../styleVariables';
-import FormUpdate from './FormUpdate';
+import FormUpdate from './UpdateStopForm';
 
 const ItineraryItem = ({ id, stopNum, name, address, complete }) => {
 	const dispatch = useDispatch();
@@ -17,13 +17,13 @@ const ItineraryItem = ({ id, stopNum, name, address, complete }) => {
 				Stop <span>{stopNum}</span>
 			</StopNumber>
 			<MiddleSection>
-				{!editing ? (
+				{editing ? (
+					<FormUpdate id={id} name={name} address={address} setEditing={setEditing} />
+				) : (
 					<div>
 						<Name>{name}</Name>
 						<Address>{address}</Address>
 					</div>
-				) : (
-					<FormUpdate id={id} name={name} address={address} setEditing={setEditing} />
 				)}
 			</MiddleSection>
 			<EndSection>
@@ -48,11 +48,11 @@ const ItineraryItem = ({ id, stopNum, name, address, complete }) => {
 
 const Container = styled.div`
 	display: flex;
-	border-radius: 5px;
-	border: 1px solid #eee;
 	width: 90%;
 	max-width: 50rem;
 	margin-bottom: 0.5rem;
+	border-radius: 5px;
+	border: 1px solid #eee;
 	@media (max-width: 500px) {
 		flex-direction: column;
 	}
@@ -62,11 +62,11 @@ const StopNumber = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	color: white;
-	background: ${(props) => (props.complete ? completeColor : primaryColor)};
-	border-radius: 5px 0 0 5px;
-	font-size: 0.8rem;
 	padding: 0.2rem 2rem;
+	background: ${(props) => (props.complete ? completeColor : primaryColor)};
+	font-size: 0.8rem;
+	color: white;
+	border-radius: 5px 0 0 5px;
 	span {
 		font-size: 2rem;
 	}
@@ -102,14 +102,16 @@ const Bottom = styled.div`
 	justify-content: flex-end;
 `;
 const CompleteLabel = styled.label`
-	font-size: 0.9rem;
 	padding: 0.5rem;
+	font-size: 0.9rem;
 `;
 const StyledButton = styled.button`
+	padding: 0.2rem 1rem;
 	color: ${(props) => props.color};
 	border: 1px solid ${(props) => props.color};
 	border-radius: 5px;
-	padding: 0.2rem 1rem;
+	outline: none;
+	cursor: pointer;
 	&:hover {
 		color: #fff;
 		background-color: ${(props) => props.color};
@@ -117,8 +119,6 @@ const StyledButton = styled.button`
 	&:not(:last-child) {
 		margin-right: 0.25rem;
 	}
-	outline: 0;
-	cursor: pointer;
 `;
 
 export default ItineraryItem;

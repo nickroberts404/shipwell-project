@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { updateStop } from '../actions';
-import Form from './Form';
+import Form from './StopForm';
 
-const FormUpdate = ({ id, name, address, setEditing }) => {
+const UpdateStopForm = ({ id, name, address, setEditing }) => {
 	const dispatch = useDispatch();
 	const onSubmit = (name, address) => {
 		setEditing(false);
@@ -17,15 +17,16 @@ const FormUpdate = ({ id, name, address, setEditing }) => {
 				initialAddress={address}
 				onSubmit={onSubmit}
 				submitButtonText="Update Stop"
+				clearOnSubmit={false}
 			/>
 		</Container>
 	);
 };
 
 const Container = styled.div`
+	margin: 0.5rem;
 	width: 100%;
 	max-width: 20rem;
-	margin: 0.5rem;
 `;
 
-export default FormUpdate;
+export default UpdateStopForm;

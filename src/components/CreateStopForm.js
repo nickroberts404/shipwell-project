@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { addStop } from '../actions';
-import Form from './Form';
+import Form from './StopForm';
 
-const FormCreate = () => {
+const CreateStopForm = () => {
 	const dispatch = useDispatch();
 	const onSubmit = (name, address) => dispatch(addStop(name, address));
 	return (
@@ -20,4 +20,4 @@ const Container = styled.div`
 	margin-bottom: 1.5rem;
 `;
 
-export default FormCreate;
+export default CreateStopForm;
