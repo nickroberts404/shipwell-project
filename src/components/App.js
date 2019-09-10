@@ -17,7 +17,8 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	font-family: 'Avenir', Helvetica, sans-serif;
+	font-family: Avenir, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
+		Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 	color: #333;
 `;
 
