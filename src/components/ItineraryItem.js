@@ -1,72 +1,58 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { updateStop, deleteStop } from '../actions';
-import Form from './Form';
+import { deleteStop } from '../actions';
+import FormUpdate from './FormUpdate';
 
 const ItineraryItem = ({ id, stopNum, name, address, complete }) => {
 	const dispatch = useDispatch();
 	const [editing, setEditing] = useState(false);
 	const updateComplete = (e) => dispatch(updateStop(id, { complete: e.target.checked }));
-	const updateNameAddress = (name, address) => {
-		setEditing(false);
-		dispatch(updateStop(id, { name, address }));
-	};
 	const removeStop = () => dispatch(deleteStop(id));
 	const toggleEditing = () => setEditing(!editing);
 	return (
 		<Container>
-			<Top>
-				<StopNumber>
-					Stop <span>{stopNum}</span>
-				</StopNumber>
-				<Middle>
-					{!editing ? (
-						<Info>
-							<StopName>{name}</StopName>
-							<StopAddress>{address}</StopAddress>
-						</Info>
-					) : (
-						<Form
-							initialName={name}
-							initialAddress={address}
-							onSubmit={updateNameAddress}
-						/>
-					)}
-				</Middle>
-				<div>
-					<Complete>
-						<label>
-							Complete:{' '}
-							<input type="checkbox" value={complete} onChange={updateComplete} />
-						</label>
-					</Complete>
-					<Bottom>
-						<button onClick={toggleEditing}>Edit</button>
-						<button onClick={removeStop}>Remove</button>
-					</Bottom>
-				</div>
-			</Top>
+			<StopNumber>
+				Stop <span>{stopNum}</span>
+			</StopNumber>
+			<MiddleSection>
+				{!editing ? (
+					<div>
+						<Name>{name}</Name>
+						<Address>{address}</Address>
+					</div>
+				) : (
+					<FormUpdate id={id} name={name} address={address} setEditing={setEditing} />
+				)}
+			</MiddleSection>
+			<EndSection>
+				<Top>
+					<CompleteLabel>
+						Complete:{' '}
+						<input type="checkbox" value={complete} onChange={updateComplete} />
+					</CompleteLabel>
+				</Top>
+				<Bottom>
+					<StyledButton color="#0679b1" onClick={toggleEditing}>
+						{editing ? 'Cancel' : 'Edit'}
+					</StyledButton>
+					<StyledButton color="#c53737" onClick={removeStop}>
+						Remove
+					</StyledButton>
+				</Bottom>
+			</EndSection>
 		</Container>
 	);
 };
 
 const Container = styled.div`
 	display: flex;
-	flex-direction: column;
 	border-radius: 5px;
 	border: 1px solid #eee;
 	width: 90%;
 	max-width: 50rem;
 	margin-bottom: 0.5rem;
 	overflow: hidden;
-`;
-const Top = styled.div`
-	display: flex;
-`;
-const Bottom = styled.div`
-	display: flex;
-	justify-content: flex-end;
 `;
 const StopNumber = styled.div`
 	display: flex;
@@ -84,21 +70,46 @@ const StopNumber = styled.div`
 	}
 	margin-right: 0.5rem;
 `;
-const Info = styled.div``;
-const StopName = styled.div`
-	font-size: 1.25rem;
-	font-weight: bold;
-`;
-const StopAddress = styled.div`
-	font-size: 0.9rem;
-`;
-const Complete = styled.div`
-	display: flex;
-	flex-grow: 1;
-`;
-const Middle = styled.div`
+const MiddleSection = styled.div`
 	display: flex;
 	align-items: center;
 	flex-grow: 1;
 `;
+const Name = styled.div`
+	font-size: 1.25rem;
+	font-weight: bold;
+`;
+const Address = styled.div`
+	font-size: 0.9rem;
+`;
+const EndSection = styled.div`
+	display: flex;
+	flex-direction: column;
+	margin: 0.5rem;
+`;
+const Top = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	flex-grow: 1;
+`;
+const Bottom = styled.div``;
+const CompleteLabel = styled.label`
+	font-size: 0.9rem;
+`;
+const StyledButton = styled.button`
+	color: ${(props) => props.color};
+	border: 1px solid ${(props) => props.color};
+	border-radius: 5px;
+	padding: 0.2rem 1rem;
+	&:hover {
+		color: #fff;
+		background-color: ${(props) => props.color};
+	}
+	&:not(:last-child) {
+		margin-right: 0.25rem;
+	}
+	outline: 0;
+	cursor: pointer;
+`;
+
 export default ItineraryItem;

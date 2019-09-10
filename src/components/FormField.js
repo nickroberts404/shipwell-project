@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const FormField = ({ value, update, error, label }) => {
+const FormField = ({ value, placeholder, update, error, label }) => {
 	const onChange = (e) => update(e.target.value);
 	return (
 		<Container>
 			<FieldLabel>
 				<Text>{label}</Text>
-				<input value={value} onChange={onChange} type="text" />
+				<input value={value} placeholder={placeholder} onChange={onChange} type="text" />
 			</FieldLabel>
 			<Error>{error}</Error>
 		</Container>
@@ -25,6 +25,7 @@ const FieldLabel = styled.label`
 	flex-direction: column;
 `;
 const Text = styled.div`
+	font-weight: bold;
 	font-size: 0.8rem;
 `;
 const Error = styled.div`

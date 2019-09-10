@@ -58,29 +58,37 @@ const Form = ({
 		}
 	};
 	return (
-		<form onSubmit={submitForm}>
+		<StyledForm onSubmit={submitForm}>
 			<FormField
 				value={name}
 				update={setName}
+				placeholder="Shipwell"
 				error={showErrors && errors.name}
 				label={'Name'}
 			/>
 			<FormField
 				value={address}
 				update={setAddress}
+				placeholder="42 Wallaby Way, Sydney"
 				error={showErrors && errors.address}
 				label={'Address'}
 			/>
 			<SubmitButton type="submit">{submitButtonText}</SubmitButton>
-		</form>
+		</StyledForm>
 	);
 };
-
+const StyledForm = styled.form`
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+`;
 const SubmitButton = styled.button`
 	border: 1px solid #0679b1;
 	border-radius: 5px;
+	align-self: flex-end;
 	cursor: pointer;
-	padding: 0.5rem;
+	padding: 0.5rem 1rem;
+	margin-top: 0.25rem;
 	outline: none;
 	color: #fff;
 	background: #0679b1;

@@ -1,20 +1,22 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { addStop } from '../actions';
-import Form from './Form';
+import Header from './Header';
+import FormCreate from './FormCreate';
 import Itinerary from './Itinerary';
 const App = () => {
-	const dispatch = useDispatch();
 	return (
 		<Container>
-			<Form onSubmit={(name, address) => dispatch(addStop(name, address))} />
+			<Header />
+			<FormCreate />
 			<Itinerary />
 		</Container>
 	);
 };
 
 const Container = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	font-family: Avenir;
 	color: #333;
 `;
